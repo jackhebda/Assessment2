@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from starlette.requests import Request
 
@@ -12,16 +12,26 @@ class IndexResponse(BaseModel):
 
 
 async def get_index(request: Request, year: int = 2004):
-    # EXERCISE 1
+       # EXERCISE 1
     # TODO INDEX_1
     # Make sure only 1996, 2004 and 2013 are valid
     # https://fastapi.tiangolo.com/tutorial/handling-errors/
     # tip: from fastapi import HTTPException
-
+    
+    years = [1996, 2004, 2013] 
+    if year not in years:
+        raise HTTPException(status_code=400, detail="Year unavailabe")
+    
     # TODO INDEX_2
     # Retrieve the latest index from external source for given base year
     # https://statbel.fgov.be/en/themes/consumer-prices/health-index
-    index = 100.00
+    
+    if year == 1996:
+        index = 151.29
+    elif year == 2004:
+        index = 132.98
+    else:
+        index = 110.11
 
     # TODO INDEX_3
     # Format and return the response
