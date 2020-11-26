@@ -40,19 +40,34 @@ async def get_index(request: Request, year: int = 2004):
 
 async def get_zipcode_risk_factor(request: Request, zipcode: int):
     # EXERCISE 2
-    pass
+    
     # TODO ZIPCODE_1
     # Validate if the zipcode entered has the correct format
     # (integer between 1000 and 9999)
+    if not (1000 <= zipcode <= 9999):
+        raise HTTPException(status_code=400, detail="Zipcode incorrect")
 
     # TODO ZIPCODE_2
     # Read the file app.data.zipcodes.csv and format data
+    with open('/home/jack/Documents/python/exam/app/data/zipcodes.csv', newline='') as f:
+        zipcode_dict = {}
+        reader = csv.reader(f)
+        for row in reader:
+            if len(row[0]) == 4:
+                zipcode_dict[int(row[0])] = row[1]
+            else:
+                for zip in range(int(row[0][:4]), int(row[0][7:])):
+                    zipcode_dict[zip] = row[1]
 
     # TODO ZIPCODE_3
     # Validate if the zipcode entered is in the dataset
+    if zipcode not in zipcode_dict.keys():
+        raise HTTPException(status_code=400, detail="Zipcode not in the dataset")
 
     # TODO ZIPCODE_4
     # Formulate appropriate response
+    return {"zipcode": zipcode,
+            "risk_factor": zipcode_dict[zipcode]}
 
 
 async def get_zipcode_risk_factor_from_database(request: Request, zipcode: int):
