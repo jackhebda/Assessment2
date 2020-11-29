@@ -1,12 +1,11 @@
 from __future__ import absolute_import
-import csv
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from starlette.requests import Request
-
 from app.models.zipcode import ZipCodeRiskFactor
 
+import csv
 
 class IndexResponse(BaseModel):
     index: float
@@ -44,7 +43,7 @@ async def get_index(request: Request, year: int = 2004):
 
 async def get_zipcode_risk_factor(request: Request, zipcode: int):
     # EXERCISE 2
-    
+
     # TODO ZIPCODE_1
     # Validate if the zipcode entered has the correct format
     # (integer between 1000 and 9999)
@@ -78,9 +77,7 @@ async def get_zipcode_risk_factor_from_database(request: Request, zipcode: int):
     # EXERCISE 3
     return await request.app.repositories.zipcodes.get(zipcode)
 
-
 router = APIRouter()
-
 
 router.add_api_route(
     "/index",
