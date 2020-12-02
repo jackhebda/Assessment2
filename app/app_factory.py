@@ -9,7 +9,7 @@ from app.api.endpoints.api import router
 from app.config import Config
 from app.db.db import DB
 from app.models.session import Session, SessionWrapper
-from app.repositories.zipcodes import ZipCodeRepository
+from app.repositories.zipcode import ZipCodeRepository
 
 
 def create_app(config: Config):
