@@ -1,0 +1,29 @@
+version: '3.1'
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:alpine
+    restart: always
+    environment:
+      POSTGRES_DATABASE: exam
+      POSTGRES_USER: jack
+      POSTGRES_PASSWORD: jack
+      POSTGRES_ROOT_PASSWORD: root
+    volumes:
+      - postgres_data:/data
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+
+  app:
+    container_name: app
+    build: ./../app
+    ports:
+      - "5000:5000"
+
+volumes:
+  postgres_data:
+  redis_data:
