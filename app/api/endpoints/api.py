@@ -12,7 +12,10 @@ class IndexResponse(BaseModel):
 
 class RiskFactor(BaseModel):
     risk_factor: str
+<<<<<<< HEAD
 
+=======
+>>>>>>> e82b760... paths fixed
 
 async def get_index(request: Request, year: int = 2004):
        # EXERCISE 1
@@ -20,7 +23,10 @@ async def get_index(request: Request, year: int = 2004):
     # Make sure only 1996, 2004 and 2013 are valid
     # https://fastapi.tiangolo.com/tutorial/handling-errors/
     # tip: from fastapi import HTTPException
+<<<<<<< HEAD
     
+=======
+>>>>>>> e82b760... paths fixed
     years = [1996, 2004, 2013] 
     if year not in years:
         raise HTTPException(status_code=400, detail="WRONG_YEAR")
@@ -52,7 +58,11 @@ async def get_zipcode_risk_factor(request: Request, zipcode: int):
 
     # TODO ZIPCODE_2
     # Read the file app.data.zipcodes.csv and format data
+<<<<<<< HEAD
     with open('/home/jack/Documents/python/exam/app/data/zipcodes.csv', newline='') as f:
+=======
+    with open('./app/data/zipcodes.csv', newline='') as f:
+>>>>>>> e82b760... paths fixed
         zipcode_dict = {}
         reader = csv.reader(f)
         for row in reader:
