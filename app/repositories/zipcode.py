@@ -5,7 +5,7 @@ from app.models.zipcode import ZipCodeRiskFactor
 from fastapi import HTTPException
 from redis import Redis
 
-r = Redis(host='redis', port=6379, decode_responses=True)
+r = Redis(host='REDIS', port=6379, decode_responses=True)
 
 class ZipCodeRepository(Base):
     db: DB
