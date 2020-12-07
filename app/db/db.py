@@ -70,20 +70,17 @@ class DB(AbstractDB):
             # test connection
             await self.conn.execute("SELECT now()")
             self.connected = True
-
-            with open('./app/data/zipcodes.csv', newline='') as f:
-                    zipcode_dict = {}
+            
+            if not await self.conn.fetch_one("SELECT * FROM riskfactor"):
+                with open('./app/data/zipcodes.csv', newline='') as f:
+                    query = "INSERT INTO riskfactor (zipcode, risk_factor) VALUES (:zipcode, :risk_factor)"
                     reader = csv.reader(f)
                     for row in reader:
                         if len(row[0]) == 4:
-                            zipcode_dict[int(row[0])] = row[1]
+                            await self.conn.execute(query = query, values = {"zipcode": int(row[0]), "risk_factor": row[1]})
                         else:
                             for zip in range(int(row[0][:4]), int(row[0][7:]) + 1):
-                                zipcode_dict[zip] = row[1]          
-
-            query = "INSERT INTO riskfactor (zipcode, risk_factor) VALUES (:zipcode, :risk_factor)"
-            for k, v in zipcode_dict.items():
-                await self.conn.execute(query = query, values = {"zipcode": k, "risk_factor": v})
+                                await self.conn.execute(query = query, values = {"zipcode": zip, "risk_factor": row[1]})    
 
         except Exception as e:
             logging.warning(f"[DB_SETUP] FAILED - {e}")

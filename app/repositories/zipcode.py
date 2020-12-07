@@ -5,7 +5,7 @@ from app.models.zipcode import ZipCodeRiskFactor
 from fastapi import HTTPException
 from redis import Redis
 
-r = Redis(host='REDIS', port=6379, decode_responses=True)
+r = Redis(host='redis')
 
 class ZipCodeRepository(Base):
     db: DB
@@ -13,8 +13,8 @@ class ZipCodeRepository(Base):
     async def get(self, zipcode: int) -> ZipCodeRiskFactor:
  
         if r.exists(zipcode):
-            return {"zipcode": zipcode,
-                "risk_factor": r.get(zipcode).decode()}
+            return {"zipcode":zipcode,
+                "risk_factor":r.get(zipcode).decode('ASCII')}
 
         query = "SELECT * FROM riskfactor WHERE zipcode = :zipcode"
         results = await self.db.conn.fetch_one(query = query, values={"zipcode": zipcode})
